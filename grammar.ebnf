@@ -1,0 +1,16 @@
+rules = +(rule | comment) $$ ;
+comment = /#[^\n]*/;
+rule = ident '=' option ?directive ';' ;
+directive = '[' ident *(ident ',') ']' ;
+option = concat *('|' concat) ;
+concat = +(lexeme | ref) ;
+lexeme = ?prefix atom ;
+prefix = '+?=' | '-?=' | '?' | '*' | '+' ;
+atom = ident | literal | regex | subexpr | eof | abort ;
+abort = /\!\<[^\>]*\>/ ;
+ref = /\{[0-9]+\}/ ; 
+subexpr = '(' option ')';
+regex = //[^/]+// ;
+literal = /'[^']*'/;
+ident = /[a-zA-Z_][a-zA-Z0-9_]*/ ;
+eof = '$$';
